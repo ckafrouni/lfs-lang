@@ -1,0 +1,107 @@
+(* 
+High-Level programming language subset of Rust
+
+Rust language reference:
+- https://doc.rust-lang.org/reference/index.html
+- https://doc.rust-lang.org/reference/statements-and-expressions.html
+- https://doc.rust-lang.org/reference/lexical-structure.html
+
+author: Christophe Kafrouni
+*)
+
+(* -- region: Primary Data Types -- *)
+
+LITERAL ::=
+    | NUMBER
+    | STRING
+    | BOOL
+    | CHAR
+    | Nil
+
+BOOL ::= KW_TRUE | KW_FALSE
+
+NUMBER ::= INT | FLOAT
+
+STRING ::= '"' CHAR* '"'
+
+(* -- endregion: Primary Data Types -- *)
+
+(* -- region: Expressions -- *)
+
+expr ::=
+    '(' expr ')'
+    | block_expr
+    | op_expr
+    | ternary_expr
+    | closure_expr
+    | function_call_expr
+    | range_expr
+    | LITERAL
+    | expr '.' IDENT
+    | IDENT
+
+block_expr ::=
+    '{' stmt* expr '}'
+
+op_expr ::=
+    expr BINARY_OP expr
+    | expr UNARY_OP
+
+ternary_expr ::=
+    KW_IF block_expr KW_ELSE block_expr
+    | KW_IF block_expr KW_ELSE ternary_expr
+
+closure_expr ::=
+    '|' IDENT* '|' expr
+
+function_call_expr ::=
+    IDENT '(' expr* ')'
+
+range_expr ::=
+    expr '..' expr
+
+(* -- endregion: Expressions -- *)
+
+(* -- region: Statements -- *)
+
+stmt ::=
+    expr ';'
+    | let_stmt
+    | if_stmt
+    | while_stmt
+    | for_stmt
+    | return_stmt
+    | break_stmt
+    | continue_stmt
+    | block_stmt
+
+let_stmt ::=
+    KW_LET IDENT ':' type '=' expr ';'
+
+if_stmt ::=
+    KW_IF block_stmt
+    | KW_IF block_stmt KW_ELSE block_stmt
+
+while_stmt ::=
+    KW_WHILE block_stmt
+
+for_stmt ::=
+    KW_FOR IDENT ':' type KW_IN expr block_stmt
+
+return_stmt ::=
+    KW_RETURN expr ';'
+
+break_stmt ::=
+    KW_BREAK ';'
+
+continue_stmt ::=
+    KW_CONTINUE ';'
+
+block_stmt ::=
+    '{' stmt* '}'
+
+(* -- endregion: Statements -- *)
+
+(* -- region: Types -- *)
+
+
